@@ -93,24 +93,24 @@ export class SmartScreen extends Entity {
       if (e.buttonId === 0) this.onMainClick()
       if (e.buttonId === 1) this.onPrevClick()
       if (e.buttonId === 2) this.onNextClick()
-    })))
+    }, {distance: 13})))
     this.render()
 
     this._eButton = new Entity()
     this._eButton.addComponent(new GLTFShape('models/E_F.glb'))
     this._eButton.addComponent(new Transform({
-      position: new Vector3(-1.5,-2.7,0)
+      position: new Vector3(-4.25,0,0)
     }))
-    this._eButton.addComponent(new OnPointerDown(() => this.onPrevClick(), {hoverText: 'Prev', button: ActionButton.POINTER}))
+    this._eButton.addComponent(new OnPointerDown(() => this.onPrevClick(), {hoverText: 'Prev', button: ActionButton.POINTER, distance: 13}))
     this._eButton.setParent(this)
 
     this._fButton = new Entity()
     this._fButton.addComponent(new GLTFShape('models/E_F.glb'))
     this._fButton.addComponent(new Transform({
-      position: new Vector3(1.5,-2.7,0),
+      position: new Vector3(4.25,0,0),
       rotation: Quaternion.Euler(0,180,0)
     }))
-    this._fButton.addComponent(new OnPointerDown(() => this.onNextClick(), {hoverText: 'Next', button: ActionButton.POINTER}))
+    this._fButton.addComponent(new OnPointerDown(() => this.onNextClick(), {hoverText: 'Next', button: ActionButton.POINTER, distance: 13}))
     this._fButton.setParent(this)
   }
 
