@@ -1,6 +1,9 @@
 import { getUserData } from '@decentraland/Identity'
 import * as ui from '@dcl/ui-scene-utils'
 import { signedFetch } from '@decentraland/SignedFetch'
+import { ApiService } from './apiService'
+
+const apiService = new ApiService()
 
 class WearableRotation implements ISystem {
   _entities: Entity[] = []
@@ -45,17 +48,44 @@ export function createWearableVendor (model: string, transform: Transform, click
     if (isModalActive) {
       return
     }
-    const userData = await getUserData()
-    log(userData)
-
-    const response = await signedFetch('https://jsonplaceholder.typicode.com/todos/1', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      responseBodyType: 'json',
-    })
-    log(response)
-
     isModalActive = true
+
+    const userData = await getUserData()
+    if (userData?.hasConnectedWeb3) {
+      const response = await apiService.claimWearable({
+        claim: 'backpack',
+        userData: { userAccount: userData.userId, userName: userData.displayName }
+      })
+      if (response?.wasClaimed) {
+        new ui.OkPrompt(
+          'You will get wearable soon to you backpack',
+          () => {
+            log(`accepted`)
+          },
+          'Ok',
+          true
+        )
+      } else {
+        new ui.OkPrompt(
+          'Success! Check you backpack soon',
+          () => {
+            log(`accepted`)
+          },
+          'Ok',
+          true
+        )
+      }
+    } else {
+      new ui.OkPrompt(
+        'You need MetaMask to claim this wearable',
+        () => {
+          log(`accepted`)
+        },
+        'Ok',
+        true
+      )
+    }
+
     const confirmationModal = new ui.OkPrompt(
       'This is an Ok Prompt',
       () => {
