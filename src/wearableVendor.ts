@@ -50,56 +50,51 @@ export function createWearableVendor (model: string, transform: Transform, click
     }
     isModalActive = true
 
-    const userData = await getUserData()
-    if (userData?.hasConnectedWeb3) {
-      const response = await apiService.claimWearable({
-        claim: 'backpack',
-        userData: { userAccount: userData.userId, userName: userData.displayName }
-      })
-      if (response?.wasClaimed) {
-        new ui.OkPrompt(
-          'You will get wearable soon to you backpack',
-          () => {
-            log(`accepted`)
-          },
-          'Ok',
-          true
-        )
-      } else {
-        new ui.OkPrompt(
-          'Success! Check you backpack soon',
-          () => {
-            log(`accepted`)
-          },
-          'Ok',
-          true
-        )
-      }
-    } else {
-      new ui.OkPrompt(
-        'You need MetaMask to claim this wearable',
-        () => {
-          log(`accepted`)
-        },
-        'Ok',
-        true
-      )
-    }
-
     const confirmationModal = new ui.OkPrompt(
-      'This is an Ok Prompt',
+        'Processing...',
       () => {
-        log(`accepted`)
         isModalActive = false
       },
       'Ok',
       true
     )
     confirmationModal.closeIcon.onClick = new OnClick(() => {
-      log('close click')
       isModalActive = false
       confirmationModal.close()
     })
+
+    const userData = await getUserData()
+    log(userData)
+    if (userData?.hasConnectedWeb3) {
+      const isWasClaimed = await apiService.checkIsWearableClaimed({
+        claim: 'backpack',
+        userData: { userAccount: userData.userId, userName: userData.displayName }
+      })
+
+      if (isWasClaimed.error) {
+        confirmationModal.text.value = isWasClaimed.error
+        return
+      }
+
+
+      if (!isWasClaimed.claimed) {
+        const response = await apiService.claimWearable({
+          claim: 'backpack',
+          userData: { userAccount: userData.userId, userName: userData.displayName }
+        })
+        if (response.error) {
+          confirmationModal.text.value = response.error
+          return
+        } else {
+          confirmationModal.text.value = 'Success! Check you backpack soon'
+        }
+      } else {
+        confirmationModal.text.value = 'You will get wearable to you backpack soon'
+      }
+
+    } else {
+      confirmationModal.text.value = 'You need MetaMask to claim this wearable'
+    }
   }, { distance: 7, showFeedback: true })
 
   collider.addComponent(onWearableClick)
