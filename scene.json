@@ -1,6 +1,6 @@
 {
   "display": {
-    "title": "Wolt HQ",
+    "title": "Wolt",
     "description": "Wolt Headquarters",
     "navmapThumbnail": "images/scene-thumbnail.png",
     "favicon": "favicon_asset"
@@ -13,17 +13,17 @@
   "main": "bin/game.js",
   "tags": [],
   "scene": {
-    "parcels": ["0,0", "0,1"],
-    "base": "0,0"
+    "parcels": ["67,-1", "67,-2"],
+    "base": "67,-1"
   },
   "spawnPoints": [
     {
       "name": "spawn1",
       "default": true,
       "position": {
-        "x": 0,
+        "x": 15.5,
         "y": 0,
-        "z": 0
+        "z": 15.5
       },
       "cameraTarget": {
         "x": 8,

@@ -4,6 +4,10 @@ import { SmartScreen } from './screen'
 import { createWearableVendor } from './wearableVendor'
 
 const scene = new Entity()
+scene.addComponent(new Transform({
+  position: new Vector3(16,0,16),
+  rotation: Quaternion.Euler(0,180,0)
+}))
 engine.addEntity(scene)
 
 const build = new Entity()
@@ -12,16 +16,16 @@ build.setParent(scene)
 
 const screen = new SmartScreen('screen', [
   {
-    src: 'images/wolt1.png',
+    src: 'resources/wolt1.png',
     type: 'image',
     // clickUrl: 'https://google.com'
   },
   {
-    src: 'images/wolt2.jpg',
+    src: 'resources/wolt2.jpg',
     type: 'image'
   },
   {
-    src: 'images/wolt3.png',
+    src: 'resources/wolt3.png',
     type: 'image'
   }
 ], {
