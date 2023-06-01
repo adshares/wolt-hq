@@ -38,8 +38,10 @@ screen.setParent(scene)
 
 const wearableVendor = createWearableVendor(
   'models/woltwearable.glb',
-  new Transform({ position: new Vector3(11, 0.3, 11.5) })
-  // 'https://google.com'
+  new Transform({
+    position: new Vector3(11, -0.5, 11.2),
+    scale: new Vector3(1.5, 1.5, 1.5)
+  })
 )
 wearableVendor.setParent(scene)
 

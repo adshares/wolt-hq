@@ -39,7 +39,7 @@ export function createWearableVendor (model: string, transform: Transform, click
 
   wearable.addComponent(new GLTFShape(model))
   wearable.addComponent(new Transform({
-    position: new Vector3(0, 0, 0.28)
+    position: new Vector3(0, 0, 0.28),
   }))
 
   rotationSystem.setWearables([pivot])
@@ -95,7 +95,7 @@ export function createWearableVendor (model: string, transform: Transform, click
     } else {
       confirmationModal.text.value = 'You need MetaMask to claim this wearable'
     }
-  }, { distance: 7, showFeedback: true })
+  }, { distance: 7, showFeedback: true, hoverText: 'Claim' })
 
   collider.addComponent(onWearableClick)
 
