@@ -43,6 +43,13 @@ const wearableVendor = createWearableVendor(
 )
 wearableVendor.setParent(scene)
 
+const stand = new Entity()
+stand.addComponent(new GLTFShape('models/kioskwolt.glb'))
+stand.addComponent(new Transform({
+  position: new Vector3(14,0,4)
+}))
+stand.setParent(scene)
+
 const promoCodePopUp = new UI.CustomPrompt(
   UI.PromptStyles.DARKLARGE,
   650,
@@ -70,7 +77,6 @@ promoCodePopUp.addButton(
   0,
   -225,
   () => {
-    log('OK')
     promoCodePopUp.hide()
   },
   ButtonStyles.RED

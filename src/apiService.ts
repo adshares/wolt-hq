@@ -1,10 +1,4 @@
-import { getUserData } from '@decentraland/Identity'
-
-declare type TScore = {
-  userAccount: string,
-  userName: string,
-  score: number
-}
+import { signedFetch } from '@decentraland/SignedFetch'
 
 declare type TUserData = {
   userAccount: string,
@@ -16,31 +10,29 @@ export class ApiService {
 
   async checkIsWearableClaimed (body: {claim: string, userData: TUserData}) {
     try {
-      const isWearableWasClaimedRes = await fetch(`${this.url}/${body.claim}/claimed/${body.userData.userAccount}`)
-      return await isWearableWasClaimedRes.json()
+      const isWearableWasClaimedRes = await signedFetch(`${this.url}/${body.claim}/claimed/${body.userData.userAccount}`, {
+        responseBodyType: 'json'
+      })
+      return await isWearableWasClaimedRes.json
     } catch (err) {
-      log(err)
+      return { error: 'Unknown error' }
     }
   }
 
   async claimWearable (body: {claim: string, userData: TUserData}) {
     try {
-      const isWearableWasClaimed = await this.checkIsWearableClaimed(body)
-      if(isWearableWasClaimed.claimed){
-        return {wasClaimed: isWearableWasClaimed.claimedAt}
-      } else{
-        await fetch(`${this.url}/${body.claim}/claims`, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body.userData)
-        })
-        return { wasClaimed: null}
-      }
+      const response = await signedFetch(`${this.url}/${body.claim}/claims`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body.userData),
+        responseBodyType: 'json'
+      })
+      return await response.json
     } catch (err) {
-      log(err)
+      return { error: 'Unknown error' }
     }
   }
 }
